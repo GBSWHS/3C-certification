@@ -1,0 +1,7 @@
+.sidebar {
+  height: calc(100vh - 108px);
+  max-width: 190px;
+  background-color: #fcffff;
+  display: inline-block;
+  border-right: solid 2px rgba(229, 231, 235, 1);
+}
