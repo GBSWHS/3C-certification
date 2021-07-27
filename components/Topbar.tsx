@@ -1,13 +1,14 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import SessionNav from './SessionNav'
 
 export default function Topbar () {
   const router = useRouter()
 
   return (
     <nav id="top" className="border-b-2 w-full px-10 text-lg">
-      <div className="flex">
+      <div className="flex justify-between">
         <div className="inline-flex gap-5 align-middle p-5">
           <Link passHref href="/">
             <div>
@@ -36,6 +37,7 @@ export default function Topbar () {
             </div>
           </Link>
         </div>
+        <SessionNav />
       </div>
     </nav>
   )
