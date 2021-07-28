@@ -5,6 +5,8 @@ import moment from 'moment'
 import useSWR from 'swr'
 import xss from 'xss'
 import Head from '../../components/Head'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
@@ -34,7 +36,7 @@ export default function NoticesPage () {
           <div className="my-10" dangerouslySetInnerHTML={{ __html: xss(content) }} />
           <hr />
           <div className="mt-6">
-            <Link href="/" passHref><span className="text-gray-400 border-2 hover:border-0 hover:bg-gray-400 hover:text-white py-2 px-5 font-bold cursor-pointer">돌아가기</span></Link>
+            <Link href="/" passHref><span className="text-gray-400 border-2 hover:border-0 hover:bg-gray-400 hover:text-white py-2 px-5 font-bold cursor-pointer"><FontAwesomeIcon icon={faArrowRight} /> 돌아가기</span></Link>
           </div>
         </div>
       </div>
