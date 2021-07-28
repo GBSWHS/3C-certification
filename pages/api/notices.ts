@@ -1,6 +1,6 @@
-import knex from 'knex'
 import jwt from 'jsonwebtoken'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { getConnection } from '../../utils/database'
 
 interface NoticeData {
   id: number
@@ -18,17 +18,7 @@ interface NoticesBody {
   notices?: NoticeData[]
 }
 
-const db = knex({
-  client: 'mysql',
-  connection: {
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || '3ccert',
-    port: Number(process.env.DB_PORT) || 3306,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME || '3ccert',
-    charset: 'utf8mb4'
-  }
-})
+const db = getConnection()
 
 export default async function NoticesApi (req: NextApiRequest, res: NextApiResponse<NoticesBody>) {
   const { token } = req.cookies
@@ -41,6 +31,9 @@ export default async function NoticesApi (req: NextApiRequest, res: NextApiRespo
     const notices = !id
       ? await db.select('*').from('notices').orderBy('createdAt', 'desc').where(isMember ? {} : { memberOnly: false })
       : (await db.select('*').from('notices').where({ id }).orderBy('createdAt', 'desc'))[0]
+
+    if (!notices) return res.send({ success: false, message: '해당 공지사항을 찾을 수 없습니다' })
+    if (notices.memberOnly && !isMember) return res.send({ success: false, message: '공지사항 열람 권한이 없습니다 (요구권한: 선생님 혹은 학생)' })
     res.send({ success: true, notices })
   } else if (req.method === 'POST') { // Post New Notice
     try {

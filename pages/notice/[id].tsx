@@ -4,26 +4,39 @@ import { useRouter } from 'next/router'
 import moment from 'moment'
 import useSWR from 'swr'
 import xss from 'xss'
+import Head from '../../components/Head'
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
 export default function NoticesPage () {
   const router = useRouter()
   const { data, error } = useSWR('/api/notices?id=' + router.query.id, fetcher)
-  if (!data) return <div>로딩중...</div>
-  if (error) return <div>오류: {error}</div>
+  if (!data) return <div className="w-screen"><Topbar /><div>로딩중...</div></div>
+  if (error) return <div className="w-screen"><Topbar /><div>오류: {error}</div></div>
+  if (!data.success) return <div className="w-screen"><Topbar /><div>오류: {data.message}</div></div>
+
   const { id, title, content, author, createdAt } = data.notices
-  const Content = xss(content)
+
   return (
     <div className="w-screen">
+      <Head subtitle={`${title} (#${id})`}/>
       <Topbar />
-      <div className="justify-center ttext-center w-full align-top p-10">
-        <div className="flex gap-3">
-          <h1 className="text-4xl font-bold">{title}</h1>
-          <Link href="/" passHref><span className="bg-gray-400 text-white py-3 px-5 rounded-lg font-bold cursor-pointer">돌아가기</span></Link>
+      <div className="text-center pt-10">
+        <h1 className="text-center text-4xl font-bold border-b-2 inline-block p-2">공지사항</h1>
+      </div>
+      <div className="flex justify-center mt-10">
+        <div className="w-full container xl:px-64 md:px-32">
+          <div className="flex gap-3 border-b-2 pb-3">
+            <h1 className="text-4xl font-bold">{title}</h1>
+          </div>
+          <p className="mt-1 font-thin">{author} | {moment(createdAt).format('YYYY-MM-DD hh:mm')} | ID: {id}</p>
+
+          <div className="my-10" dangerouslySetInnerHTML={{ __html: xss(content) }} />
+          <hr />
+          <div className="mt-6">
+            <Link href="/" passHref><span className="text-gray-400 border-2 hover:border-0 hover:bg-gray-400 hover:text-white py-2 px-5 font-bold cursor-pointer">돌아가기</span></Link>
+          </div>
         </div>
-        <p className="mt-1">{author} | {moment(createdAt).format('YYYY-MM-DD hh:mm')} | ID: {id}</p>
-        <div className="mt-3" dangerouslySetInnerHTML={{ __html: Content }} />
       </div>
     </div>
   )

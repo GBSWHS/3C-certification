@@ -1,5 +1,9 @@
 @import "@fontsource/noto-sans-kr";
 
+html {
+  overflow-x: hidden;
+}
+
 html, body, div {
   padding: 0;
   margin: 0;

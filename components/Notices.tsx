@@ -21,9 +21,9 @@ export default function Notices () {
   return (
     <div className="mt-3">
       {data.notices.map((notice: NoticeData, i: number) => (
-        <div className="mt-3" key={i}>
+        <div className="mt-8" key={i}>
           <Link href={'/notice/' + notice.id} passHref>
-            <div className="cursor-pointer">
+            <div className="cursor-pointer rounded-sm border-2 hover:border-blue-300 p-8">
               <h3 className="text-xl">{notice.title}</h3>
               <p>{notice.author} | {moment(notice.createdAt).format('YYYY-MM-DD hh:mm')}</p>
             </div>

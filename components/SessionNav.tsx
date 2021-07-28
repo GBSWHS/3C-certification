@@ -9,8 +9,11 @@ export default function SessionNav () {
   if (error || !data.success) return <a className="rounded-md self-center font-bold cursor-pointer ml-5 p-3" href={process.env.NEXT_PUBLIC_OAUTH_URI}>로그인</a>
 
   return (
-    <div className="rounded-md self-center font-bold cursor-pointer ml-5 p-3">
-      <b>{data.name} {data.type ? '선생' : '학생'}</b>님 | <Link href="/logout">로그아웃</Link>
+    <div className="rounded-md self-center ml-5 p-3 flex gap-3">
+      <div>
+        <b>{data.name}</b> {data.type ? '선생' : '학생'}님
+      </div>
+      <span className="hover:underline border-l-2 pl-3"><Link href="/logout">로그아웃</Link></span>
     </div>
   )
 }
