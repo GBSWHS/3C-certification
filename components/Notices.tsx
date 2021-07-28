@@ -1,3 +1,5 @@
+import moment from 'moment'
+import Link from 'next/link'
 import useSWR from 'swr'
 
 interface NoticeData {
@@ -19,10 +21,12 @@ export default function Notices () {
   return (
     <div>
       {data.notices.map((notice: NoticeData, i: number) => (
-        <div key={i}>
-          <h3>{notice.title}</h3>
-          <p>{notice.author} | {notice.createdAt}</p>
-        </div>
+        <Link href={'/notices/' + notice.id} passHref key={i}>
+          <div className="cursor-pointer">
+            <h3 className="text-xl">{notice.title}</h3>
+            <p>{notice.author} | {moment(notice.createdAt).format('YYYY-MM-DD hh:mm')}</p>
+          </div>
+        </Link>
       ))}
     </div>
   )

@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 interface IdentData {
   name?: string
-  type?: number
+  type?: boolean
 }
 
 interface IdentBody extends IdentData {
@@ -15,7 +15,7 @@ export default function IdentApi (req: NextApiRequest, res: NextApiResponse<Iden
   if (!token) return res.status(401).json({ success: false })
 
   try {
-    res.json({ success: true, ...(jwt.verify(token, process.env.TOKEN_SECRET!) as any).user as IdentData })
+    res.json({ success: true, ...jwt.verify(token, process.env.TOKEN_SECRET!) as IdentData })
   } catch (_) {
     res.status(401).json({ success: false })
   }

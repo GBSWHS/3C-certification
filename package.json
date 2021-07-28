@@ -12,12 +12,16 @@
     "@fontsource/noto-sans-kr": "^4.5.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.95.8",
+    "moment": "^2.29.1",
     "mysql": "^2.18.1",
     "next": "11.0.1",
     "node-fetch": "^2.6.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "swr": "^0.5.6"
+    "suneditor": "^2.41.3",
+    "suneditor-react": "^3.3.0",
+    "swr": "^0.5.6",
+    "xss": "^1.0.9"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^8.5.4",
