@@ -17,7 +17,7 @@ export default async function AuthApi (req: NextApiRequest, res: NextApiResponse
     })
   }).then((res) => res.json())
 
-  if (!resp.success) return res.status(302).setHeader('Location', process.env.NEXT_PUBLIC_OAUTH_URI!).send('authorization error! redirecting...')
+  if (!resp.success) return res.redirect(process.env.NEXT_PUBLIC_OAUTH_URI!)
   const token = jwt.sign({ ...resp.user, type: resp.user.class_number === 0 }, process.env.TOKEN_SECRET!, { expiresIn: '1h' })
-  res.status(302).setHeader('Set-Cookie', `token=${token}; path=/; expires=${new Date(Date.now() + 3600000).toUTCString()}`).setHeader('Location', '/').send('authorization success! redirecting...')
+  res.status(302).setHeader('Set-Cookie', `token=${token}; path=/; expires=${new Date(Date.now() + 3600000).toUTCString()}`).redirect('/')
 }
