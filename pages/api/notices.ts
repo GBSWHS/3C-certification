@@ -33,11 +33,14 @@ const db = knex({
 export default async function NoticesApi (req: NextApiRequest, res: NextApiResponse<NoticesBody>) {
   const { token } = req.cookies
   if (req.method === 'GET') { // Get Notices List
+    const { id } = req.query
     let isMember = false
     try {
       if ((jwt.verify(token!, process.env.TOKEN_SECRET!) as any).id) isMember = true
     } catch (_) { }
-    const notices = await db.select('*').from('notices').orderBy('createdAt', 'desc').where(isMember ? {} : { memberOnly: false })
+    const notices = !id
+      ? await db.select('*').from('notices').orderBy('createdAt', 'desc').where(isMember ? {} : { memberOnly: false })
+      : (await db.select('*').from('notices').where({ id }).orderBy('createdAt', 'desc'))[0]
     res.send({ success: true, notices })
   } else if (req.method === 'POST') { // Post New Notice
     try {
@@ -50,7 +53,8 @@ export default async function NoticesApi (req: NextApiRequest, res: NextApiRespo
       if (!data) return
 
       res.send({ success: true, id: data.id })
-    } catch (_) {
+    } catch (err) {
+      console.log(err)
       return res.status(403).send({ success: false, message: '공지사항을 작성하려면 로그인하여야 합니다' })
     }
   }

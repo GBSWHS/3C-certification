@@ -19,14 +19,16 @@ export default function Notices () {
   if (error) return <div>오류: {error}</div>
 
   return (
-    <div>
+    <div className="mt-3">
       {data.notices.map((notice: NoticeData, i: number) => (
-        <Link href={'/notices/' + notice.id} passHref key={i}>
-          <div className="cursor-pointer">
-            <h3 className="text-xl">{notice.title}</h3>
-            <p>{notice.author} | {moment(notice.createdAt).format('YYYY-MM-DD hh:mm')}</p>
-          </div>
-        </Link>
+        <div className="mt-3" key={i}>
+          <Link href={'/notice/' + notice.id} passHref>
+            <div className="cursor-pointer">
+              <h3 className="text-xl">{notice.title}</h3>
+              <p>{notice.author} | {moment(notice.createdAt).format('YYYY-MM-DD hh:mm')}</p>
+            </div>
+          </Link>
+        </div>
       ))}
     </div>
   )
