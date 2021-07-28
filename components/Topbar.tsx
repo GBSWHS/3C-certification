@@ -12,7 +12,7 @@ export default function Topbar () {
         <div className="inline-flex gap-5 align-middle p-5">
           <Link passHref href="/">
             <div>
-              <Image src="/images/logo.png" width={60} height={60} alt="logo" priority/>
+              <Image src="/logo.png" width={60} height={60} alt="logo" priority/>
               <span className="text-xs">3C인증제</span>
             </div>
           </Link>
