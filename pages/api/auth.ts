@@ -16,7 +16,6 @@ export default async function AuthApi (req: NextApiRequest, res: NextApiResponse
       grant_type: 'authorization_code'
     })
   }).then((res) => res.json())
-
   if (!resp.success) return res.redirect(process.env.NEXT_PUBLIC_OAUTH_URI!)
   const token = jwt.sign({ ...resp.user, type: resp.user.class_number === 0 }, process.env.TOKEN_SECRET!, { expiresIn: '1h' })
   res.setHeader('Set-Cookie', `token=${token}; path=/; expires=${new Date(Date.now() + 3600000).toUTCString()}`)
