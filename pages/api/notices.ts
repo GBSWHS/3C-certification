@@ -61,7 +61,21 @@ export default async function NoticesApi (req: NextApiRequest, res: NextApiRespo
       res.send({ success: true })
     } catch (err) {
       console.log(err)
-      return res.status(403).send({ success: false, message: '공지사항을 작성하려면 로그인하여야 합니다' })
+      return res.status(403).send({ success: false, message: '공지사항을 삭제하려면 로그인하여야 합니다' })
+    }
+  } else if (req.method === 'PUT') {
+    try {
+      const { id } = req.body
+      if (!id) return res.status(403).send({ success: false, message: '공지사항의 id가 필요합니다.' })
+      const { type } = (jwt.verify(token!, process.env.TOKEN_SECRET!) as any)
+      if (!type) return res.status(403).send({ success: false, message: '공지사항 수정 권한이 없습니다 (요구권한: 선생님)' })
+      const { title, content } = req.body
+      await db.update({ title, content }).where({ id }).from('notices')
+
+      res.send({ success: true, id })
+    } catch (err) {
+      console.log(err)
+      return res.status(403).send({ success: false, message: '공지사항을 수정하려면 로그인하여야 합니다' })
     }
   }
 }
