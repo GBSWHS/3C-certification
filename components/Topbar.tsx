@@ -26,7 +26,7 @@ export default function Topbar () {
               3C 인증제란?
             </div>
           </Link>
-          <Link passHref href="list">
+          <Link passHref href="/list">
             <div className={`rounded-md self-center font-bold cursor-pointer p-3 ${router.asPath === '/list' ? 'bg-accent1' : ''}`}>
               목록
             </div>

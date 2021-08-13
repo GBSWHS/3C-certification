@@ -15,6 +15,8 @@ const SunEditor = dynamic(() => import('suneditor-react'), {
   ssr: false
 })
 
+const TagList = ['문화역량', '기초역량', '봉사역량', '공동체역량', '실무역량']
+
 const sunEditorOptions: SetOptions = {
   buttonList: [
     ['undo', 'redo', 'font', 'fontSize', 'formatBlock'],
@@ -30,17 +32,17 @@ export default function NoticeEdit () {
   const [errorr, setError] = useState('')
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-  const [memberOnly, setMemberOnly] = useState(true)
+  const [tag, setTag] = useState('')
 
   const id = router.query.id
-  const { data, error } = useSWR('/api/notices?id=' + id, fetcher)
+  const { data, error } = useSWR('/api/lists?id=' + id, fetcher)
   if (!data) return <div>로딩중...</div>
   if (error) return <div>오류: {error}</div>
   if (!data.success) return <div>게시글을 찾을 수 없음</div>
   if (!title && !content) {
-    setContent(data.notices.content)
-    setTitle(data.notices.title)
-    setMemberOnly(data.notices.memberOnly)
+    setContent(data.posts.content)
+    setTitle(data.posts.title)
+    setTag(data.posts.tag)
   }
   console.log(data)
   async function onSubmit (ev: FormEvent) {
@@ -48,11 +50,11 @@ export default function NoticeEdit () {
     if (title.length < 5) return alert('제목은 5자 이상이여야 합니다.')
     if (content.length < 10) return alert('내용은 10자 이상이여야 합니다.')
 
-    const res = await fetch('/api/notices', {
+    const res = await fetch('/api/lists', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        title, content, memberOnly, id
+        title, content, tag, id
       })
     }).then((res) => res.json())
 
@@ -62,16 +64,16 @@ export default function NoticeEdit () {
     }
 
     alert('성공적으로 글이 수정되었습니다.')
-    router.push('/notice/' + res.id)
+    router.push('/post/' + res.id)
   }
 
   return (
     <div className="w-screen">
-      <Head subtitle="공지사항 작성" />
+      <Head subtitle="3C인증서 수정" />
       <Topbar />
       <div className="inline-block w-full align-top p-10">
         <div className="text-center">
-          <h1 className="text-center text-4xl border-b-2 font-bold inline-block cursor-default p-2"><FontAwesomeIcon icon={faPenAlt}/> 공지사항 수정</h1>
+          <h1 className="text-center text-4xl border-b-2 font-bold inline-block cursor-default p-2"><FontAwesomeIcon icon={faPenAlt}/> 3C인증서 수정</h1>
         </div>
 
         {errorr
@@ -80,14 +82,14 @@ export default function NoticeEdit () {
 
         <div className="flex justify-center">
           <form onSubmit={onSubmit} className="mt-5 container">
-            <input autoFocus type="text" defaultValue={data.notices.title} required className="mb-3 w-full border-2 p-3 focus:border-blue-300" maxLength={30} onChange={(ev) => setTitle(ev.target.value)} placeholder="이곳을 눌러 제목을 입력하세요"/>
-            <SunEditor setOptions={sunEditorOptions} setDefaultStyle="font-family: 'Noto Sans CJK KR'; font-weight: 400;" defaultValue={data.notices.content} placeholder="이곳을 눌러 수정을 시작하세요" onChange={(v) => setContent(v)} height='400px' lang="ko"/>
+            <input autoFocus type="text" defaultValue={data.posts.title} required className="mb-3 w-full border-2 p-3 focus:border-blue-300" maxLength={30} onChange={(ev) => setTitle(ev.target.value)} placeholder="이곳을 눌러 제목을 입력하세요"/>
+            <SunEditor setOptions={sunEditorOptions} setDefaultStyle="font-family: 'Noto Sans CJK KR'; font-weight: 400;" defaultValue={data.posts.content} placeholder="이곳을 눌러 수정을 시작하세요" onChange={(v) => setContent(v)} height='400px' lang="ko"/>
             <div className="flex gap-3 flex-wrap mt-3">
-              <label className="bg-gray-100 py-3 px-5 font-bold max-w-max cursor-pointer" htmlFor="memberOnly">
-                <input checked={memberOnly} className="mr-2" type="checkbox" id="memberOnly" onChange={(ev) => setMemberOnly(ev.target.checked)}/>
-                <span className="select-none">학생만 볼 수 있음</span>
-              </label>
-              <button type="submit" className="text-white bg-blue-400 hover:bg-blue-500 hover:text-white py-2 px-5 font-bold cursor-pointer"><FontAwesomeIcon icon={faPenAlt}/> 게시</button>
+              <select className="text-white bg-green-400 hover:bg-green-500 hover:text-white py-2 px-5 font-bold cursor-pointer">
+                <option>{tag}</option>
+                { TagList.map((m, i) => m === tag ? <></> : <option key={i} onClick={() => setTag(m)}>{m}</option>)}
+              </select>
+              <button type="submit" className="text-white bg-blue-400 hover:bg-blue-500 hover:text-white py-2 px-5 font-bold cursor-pointer"><FontAwesomeIcon icon={faPenAlt}/> 수정</button>
               <Link href="/" passHref><span className="text-gray-400 border-2 hover:border-0 hover:bg-gray-400 hover:text-white py-2 px-5 font-bold cursor-pointer"><FontAwesomeIcon icon={faArrowRight} /> 돌아가기</span></Link>
             </div>
           </form>
