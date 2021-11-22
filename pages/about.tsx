@@ -16,7 +16,6 @@ export default function About () {
               <Image src="/3ccert.png" width="600px" height="600px" alt="3C 인증제란?" />
               <div>
                 <b>3C 인증제</b>는 미래사회를 이끌어 나갈 SW직업인 양성을 위한 3C 핵심가치와 6대 핵심 역량을 길러주기 위해 제작되었습니다.
-                (작성중...)
               </div>
             </div>
           </div>
