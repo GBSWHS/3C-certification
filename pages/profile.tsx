@@ -20,7 +20,7 @@ export default function About () {
       <div className="flex justify-center">
         <div className="inline-block w-full align-top p-10 container">
           <div className="text-center">
-            <h1 className="text-center text-4xl font-bold border-b-2 inline-block p-2">{data.name}{data.type ? '선생' : '학생'} 님의 정보</h1>
+            <h1 className="text-center text-4xl font-bold border-b-2 inline-block p-2">{data.name}{data.type ? '선생' : '학생'}님의 정보</h1>
           </div>
           {data.type
             ? <span>열람 권한이 없습니다</span>
