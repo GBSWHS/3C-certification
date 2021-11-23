@@ -23,4 +23,5 @@ create table 3ccert.posts (
   tag varchar(30) not null
 );
 
+SELECT * FROM 3ccert.posts where status = 1 
 grant all on 3ccert.* to 3ccert@localhost;

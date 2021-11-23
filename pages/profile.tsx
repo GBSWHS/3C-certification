@@ -7,11 +7,9 @@ import useSWR from 'swr'
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 export default function About () {
-  const router = useRouter()
   const { data, error } = useSWR('/api/ident', fetcher)
 
   if (!data) return <div className="rounded-md self-center font-bold cursor-pointer ml-5 p-3">로딩중...</div>
-  if (error || !data.success) return router.push('/')
 
   return (
     <div className="w-screen">
@@ -22,9 +20,11 @@ export default function About () {
           <div className="text-center">
             <h1 className="text-center text-4xl font-bold border-b-2 inline-block p-2">{data.name}{data.type ? '선생' : '학생'}님의 정보</h1>
           </div>
-          {data.type
-            ? <span>열람 권한이 없습니다</span>
-            : <div>
+          { !data.success || error
+            ? <span>오류: 로그인이 필요합니다.</span>
+            : data.type
+              ? <span>열람 권한이 없습니다</span>
+              : <div>
               <p>{data.grade}학년 {data.class}반 {data.class_number}번 {data.name}학생의 3C인증 정보 조회</p>
               <table className="table-fixed w-full mt-5 border-2 border-gray-200 text-center">
                 <thead className="border-b-2">
