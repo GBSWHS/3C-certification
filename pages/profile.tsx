@@ -1,6 +1,5 @@
 import Topbar from '../components/Topbar'
 import Head from '../components/Head'
-import { useRouter } from 'next/router'
 import moment from 'moment'
 import Link from 'next/link'
 import useSWR from 'swr'
