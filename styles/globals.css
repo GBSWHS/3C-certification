@@ -1,8 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 @import "@fontsource/noto-sans-kr";
-
-html {
-  overflow-x: hidden;
-}
 
 html, body, div {
   padding: 0;
@@ -12,17 +11,4 @@ html, body, div {
 
 * {
   box-sizing: border-box;
-}
-
-#nprogress .bar {
-  background: #38BDF8 !important;
-  height: 5px !important;
-}
-
-#nprogress .peg {
-  box-shadow: 0 0 10px #38BDF8, 0 0 5px #38BDF8;
-}
-
-#nprogress .spinner-icon {
-  display: none;
 }
